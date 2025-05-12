@@ -10,17 +10,19 @@ public class MyRobot : MonoBehaviour
 
     public float speed = 5.0f;
 
-    private void OnFootstep()
-    {
-        Debug.Log("OnFootstep");
-        audioSource.Play();
-    }
+    //private void OnFootstep()
+    //{
+    //    Debug.Log("OnFootstep");
+    //    audioSource.Play();
+    //}
 
-    private void OnAttack()
-    {
-        Debug.Log("OnAttack");
-        isAttack = false;
-    }
+    //private void OnAttack()
+    //{
+    //    Debug.Log("OnAttack");
+    //    isAttack = false;
+    //}
+
+
 
     void Start()
     {
@@ -58,11 +60,23 @@ public class MyRobot : MonoBehaviour
             isMoving = true;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isAttack)
         {
             isAttack = true;
             animator.Play("ATTACK");
         }
+
+        if(isAttack)
+        {
+            AnimatorStateInfo animatorStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (animatorStateInfo.IsName("ATTACK") && animatorStateInfo.normalizedTime >= 1f)
+            {
+                isAttack = false;
+            }
+        }
+
+        
 
         if (isMoving)
         {
